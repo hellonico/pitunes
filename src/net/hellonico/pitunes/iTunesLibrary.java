@@ -28,9 +28,9 @@
 package net.hellonico.pitunes;
 
 
+import nl.escay.javaitunesapi.itunes.Application;
 import nl.escay.javaitunesapi.itunes.ITunesSuite;
 import nl.escay.javaitunesapi.itunes.Source;
-import processing.core.PApplet;
 
 /**
  * This is a template class and can be used to start a new processing library or tool.
@@ -49,6 +49,7 @@ public class iTunesLibrary {
 	public final static String VERSION = "##library.prettyVersion##";
 
 	private ITunesSuite iTunes;
+	private Application app;
 
 	private Source source;
 
@@ -56,6 +57,7 @@ public class iTunesLibrary {
 		iTunes = new ITunesSuite();
 		iTunes.start();
 		source = new Source();
+		app = iTunes.getApplication();
 	}
 	
 	public void play() {iTunes.play();}
@@ -63,6 +65,27 @@ public class iTunesLibrary {
 	public void toggle() {iTunes.playPause();}
 	public void next() {iTunes.nextTrack();}
 	public void previous() {iTunes.previousTrack();}
+	public void soundLow() {
+		setSound(app.getSoundVolume()-10);
+	}
+	public void soundHigh() {
+		setSound(app.getSoundVolume()+10);
+	}
+	public void setSound(int v) {
+		try {
+			app.setSoundVolume(v);
+		} catch(Exception e) {
+			// whatever
+		}
+	}
+	
+	public String current() {
+		try {
+			return iTunes.getApplication().getCurrentTrackName();
+		} catch(Exception e) {
+			return "";
+		}
+	}
 	
 	public static String version() {
 		return VERSION;
